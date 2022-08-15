@@ -35,7 +35,7 @@ impl Table {
     }
 
     pub fn valid_position(&self, x: i32, y: i32) -> bool {
-        x < self.xsize && y < self.ysize
+        x >= 0 && y >= 0 && x < self.xsize && y < self.ysize
     }
 }
 
@@ -46,5 +46,22 @@ impl Robot {
             y: y,
             direction: direction,
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_bounds() {
+        assert!(Table::new(5, 5).valid_position(0, 0));
+        assert!(Table::new(5, 5).valid_position(4, 4));
+        assert!(!Table::new(5, 5).valid_position(5, 5));
+        assert!(!Table::new(5, 5).valid_position(4, 5));
+        assert!(!Table::new(5, 5).valid_position(5, 4));
+        assert!(!Table::new(5, 5).valid_position(0, -1));
+        assert!(!Table::new(5, 5).valid_position(-1, 0));
     }
 }
