@@ -1,22 +1,31 @@
 // Here is our model
 
+use phf::phf_map;
+
 pub struct Table {
-    xsize: usize,
-    ysize: usize,
+    pub xsize: usize,
+    pub ysize: usize,
 }
 
 pub struct Robot {
-    x: usize,
-    y: usize,
-    direction: Direction,
+    pub x: usize,
+    pub y: usize,
+    pub direction: Direction,
 }
 
-pub enum Direction {
-    North,
-    East,
-    South,
-    West,
+#[derive(Debug, Clone)]
+pub struct Direction {
+    pub x: i32,
+    pub y: i32,
 }
+
+pub static DIRECTIONS: phf::Map<&'static str, Direction> = phf_map! {
+    "NORTH" => Direction { x: 0, y: 1 },
+    "EAST" => Direction { x: 1, y: 0 },
+    "SOUTH" => Direction { x: 0, y: -1 },
+    "WEST" => Direction { x: -1, y: 0 },
+};
+
 
 impl Table {
     pub fn new(xsize: usize, ysize: usize) -> Table {
@@ -24,6 +33,10 @@ impl Table {
             xsize: xsize,
             ysize: ysize,
         }
+    }
+
+    pub fn valid_position(&self, x: usize, y: usize) -> bool {
+        x < self.xsize && y < self.ysize
     }
 }
 
