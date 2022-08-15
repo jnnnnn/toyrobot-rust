@@ -1,6 +1,6 @@
 # Toyrobot by a beginner Rust user
 
-This is an implementation of the toy robot challenge in Rust.
+This is an implementation of [the toy robot challenge](https://joneaves.wordpress.com/2014/07/21/toy-robot-coding-test/) in Rust.
 
 I have only read Rust By Example and scanned through the official Rust book.
 
