@@ -2,10 +2,13 @@
 
 use phf::phf_map;
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct Table {
     pub xsize: i32,
     pub ysize: i32,
 }
+
+#[derive(Debug, PartialEq, Eq)]
 
 pub struct Robot {
     pub x: i32,
@@ -13,7 +16,7 @@ pub struct Robot {
     pub direction: Direction,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Direction {
     pub x: i32,
     pub y: i32,

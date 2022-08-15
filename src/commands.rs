@@ -2,7 +2,7 @@ use super::model::*;
 
 use phf::phf_map;
 
-#[derive(Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub enum Command {
     Place {
         x: i32,
@@ -86,5 +86,76 @@ pub fn execute_command(table: &Table, robot: &mut Option<Robot>, command: Comman
                 report(robot);
             }
         }
+    }
+}
+
+mod tests {
+    use super::*;
+    #[test]
+    fn test_left() {
+        let mut robot = Robot::new(0, 0, DIRECTIONS.get("NORTH").unwrap().clone());
+        turn_left(&mut robot);
+        assert_eq!(robot.direction, DIRECTIONS.get("WEST").unwrap().clone());
+    }
+
+    #[test]
+    fn test_right() {
+        let mut robot = Robot::new(0, 0, DIRECTIONS.get("NORTH").unwrap().clone());
+        turn_right(&mut robot);
+        assert_eq!(robot.direction, DIRECTIONS.get("EAST").unwrap().clone());
+    }
+
+    #[test]
+    fn test_move() {
+        let mut robot = Robot::new(0, 0, DIRECTIONS.get("NORTH").unwrap().clone());
+        move_robot(&mut robot, &Table::new(5, 5));
+        assert_eq!(robot.y, 1);
+    }
+
+    #[test]
+    fn test_move_off_table() {
+        let mut robot = Robot::new(0, 4, DIRECTIONS.get("NORTH").unwrap().clone());
+        move_robot(&mut robot, &Table::new(5, 5));
+        assert_eq!(robot.y, 4);
+    }
+
+    #[test]
+    fn test_report() {
+        let robot = Robot::new(0, 0, DIRECTIONS.get("NORTH").unwrap().clone());
+        report(&robot);
+        assert_eq!(robot.y, 0);
+    }
+
+    #[test]
+    fn test_place() {
+        let mut robot = None;
+        execute_command(
+            &Table::new(5, 5),
+            &mut robot,
+            Command::Place {
+                x: 1,
+                y: 2,
+                direction: DIRECTIONS.get("EAST").unwrap().clone(),
+            },
+        );
+        let robot = robot.unwrap();
+        assert_eq!(robot.x, 1);
+        assert_eq!(robot.y, 2);
+        assert_eq!(robot.direction, *DIRECTIONS.get("EAST").unwrap());
+    }
+
+    #[test]
+    fn test_place_off_table() {
+        let mut robot = None;
+        execute_command(
+            &Table::new(5, 5),
+            &mut robot,
+            Command::Place {
+                x: 6,
+                y: 2,
+                direction: DIRECTIONS.get("EAST").unwrap().clone(),
+            },
+        );
+        assert_eq!(robot, None);
     }
 }
