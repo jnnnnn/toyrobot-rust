@@ -5,8 +5,8 @@ use phf::phf_map;
 #[derive(Clone)]
 pub enum Command {
     Place {
-        x: usize,
-        y: usize,
+        x: i32,
+        y: i32,
         direction: Direction,
     },
     Move,
@@ -40,13 +40,11 @@ fn turn_right(robot: &mut Robot) {
 }
 
 fn move_robot(robot: &mut Robot, table: &Table) {
-    robot.x = (robot.x as i32 + robot.direction.x) as usize;
-    robot.y = (robot.y as i32 + robot.direction.y) as usize;
-    if robot.x >= table.xsize {
-        robot.x = table.xsize - 1;
-    }
-    if robot.y >= table.ysize {
-        robot.y = table.ysize - 1;
+    let x = robot.x + robot.direction.x;
+    let y = robot.y + robot.direction.y;
+    if table.valid_position(x, y) {
+        robot.x = x;
+        robot.y = y;
     }
 }
 

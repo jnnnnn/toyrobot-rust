@@ -62,11 +62,11 @@ fn parse_place(mut words: std::str::SplitWhitespace) -> Result<Command, std::io:
     })
 }
 
-fn get_int(word: Option<&str>) -> Result<usize, std::io::Error> {
+fn get_int(word: Option<&str>) -> Result<i32, std::io::Error> {
     word.ok_or(std::io::Error::new(
         std::io::ErrorKind::InvalidInput,
         "Missing integer",
-    ))?.parse::<usize>().map_err(|_| {
+    ))?.parse::<i32>().map_err(|_| {
         std::io::Error::new(
             std::io::ErrorKind::InvalidInput,
             "Invalid integer",

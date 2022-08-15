@@ -3,13 +3,13 @@
 use phf::phf_map;
 
 pub struct Table {
-    pub xsize: usize,
-    pub ysize: usize,
+    pub xsize: i32,
+    pub ysize: i32,
 }
 
 pub struct Robot {
-    pub x: usize,
-    pub y: usize,
+    pub x: i32,
+    pub y: i32,
     pub direction: Direction,
 }
 
@@ -27,20 +27,20 @@ pub static DIRECTIONS: phf::Map<&'static str, Direction> = phf_map! {
 };
 
 impl Table {
-    pub fn new(xsize: usize, ysize: usize) -> Table {
+    pub fn new(xsize: i32, ysize: i32) -> Table {
         Table {
             xsize: xsize,
             ysize: ysize,
         }
     }
 
-    pub fn valid_position(&self, x: usize, y: usize) -> bool {
+    pub fn valid_position(&self, x: i32, y: i32) -> bool {
         x < self.xsize && y < self.ysize
     }
 }
 
 impl Robot {
-    pub fn new(x: usize, y: usize, direction: Direction) -> Robot {
+    pub fn new(x: i32, y: i32, direction: Direction) -> Robot {
         Robot {
             x: x,
             y: y,
