@@ -5,9 +5,12 @@ use std::io;
 // Read a line of input and parse it, returning a runnable command closure to run
 pub fn read_input() -> Result<Command, std::io::Error> {
     let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
+    io::stdin().read_line(&mut input)?;
     let mut words = input.split_whitespace();
-    let keyword = words.next().unwrap();
+    let keyword = words.next().ok_or(std::io::Error::new(
+        std::io::ErrorKind::InvalidInput,
+        "No keyword found",
+    ))?;
     match parse_keyword(&keyword) {
         Some(command) => parse_command(command, words),
         None => Err(std::io::Error::new(
@@ -32,9 +35,17 @@ fn parse_command(
 }
 
 fn parse_place(mut words: std::str::SplitWhitespace) -> Result<Command, std::io::Error> {
-    let x = words.next().unwrap().parse::<usize>().unwrap();
-    let y = words.next().unwrap().parse::<usize>().unwrap();
-    let direction_input = words.next().unwrap();
+    let x = get_int(words.next())?;
+    let y = get_int(words.next())?;
+    let direction_input = match words.next() {
+        Some(direction) => direction,
+        None => {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::InvalidInput,
+                "Missing direction",
+            ))
+        }
+    };
     let direction = match model::DIRECTIONS.get(direction_input) {
         Some(direction) => direction,
         None => {
@@ -48,5 +59,17 @@ fn parse_place(mut words: std::str::SplitWhitespace) -> Result<Command, std::io:
         x,
         y,
         direction: direction.clone(),
+    })
+}
+
+fn get_int(word: Option<&str>) -> Result<usize, std::io::Error> {
+    word.ok_or(std::io::Error::new(
+        std::io::ErrorKind::InvalidInput,
+        "Missing integer",
+    ))?.parse::<usize>().map_err(|_| {
+        std::io::Error::new(
+            std::io::ErrorKind::InvalidInput,
+            "Invalid integer",
+        )
     })
 }

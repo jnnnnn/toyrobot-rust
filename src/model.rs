@@ -13,19 +13,18 @@ pub struct Robot {
     pub direction: Direction,
 }
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct Direction {
     pub x: i32,
     pub y: i32,
 }
 
 pub static DIRECTIONS: phf::Map<&'static str, Direction> = phf_map! {
-    "NORTH" => Direction { x: 0, y: 1 },
-    "EAST" => Direction { x: 1, y: 0 },
-    "SOUTH" => Direction { x: 0, y: -1 },
-    "WEST" => Direction { x: -1, y: 0 },
+    "NORTH" => Direction { x: 0, y: 1, },
+    "EAST" => Direction { x: 1, y: 0, },
+    "SOUTH" => Direction { x: 0, y: -1, },
+    "WEST" => Direction { x: -1, y: 0, },
 };
-
 
 impl Table {
     pub fn new(xsize: usize, ysize: usize) -> Table {

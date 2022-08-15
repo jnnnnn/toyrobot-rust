@@ -51,7 +51,14 @@ fn move_robot(robot: &mut Robot, table: &Table) {
 }
 
 fn report(robot: &Robot) {
-    println!("{},{},{:?}", robot.x, robot.y, robot.direction);
+    let direction = match robot.direction {
+        Direction { x: 0, y: 1, .. } => "NORTH",
+        Direction { x: 1, y: 0, .. } => "EAST",
+        Direction { x: 0, y: -1, .. } => "SOUTH",
+        Direction { x: -1, y: 0, .. } => "WEST",
+        _ => "UNKNOWN",
+    };
+    println!("{},{} {direction}", robot.x, robot.y);
 }
 
 pub fn execute_command(table: &Table, robot: &mut Option<Robot>, command: Command) {
