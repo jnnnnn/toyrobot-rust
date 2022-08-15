@@ -13,7 +13,8 @@ pub fn read_input() -> Result<Command, &'static str> {
 
 fn parse_input(input: String) -> Result<Command, &'static str> {
     // split input by comma or space
-    let mut words = input.split(|c| c == ',' || c == ' ');
+    let mut words =
+        input.split(|c| c == ',' || c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\0');
     let keyword = words.next().ok_or("No keyword found")?;
     match parse_keyword(&keyword) {
         Some(command) => parse_command(command, words),
